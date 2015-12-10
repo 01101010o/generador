@@ -1,5 +1,6 @@
 #! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#Relaciona el numero "0" con un '+'
+#y el numero "1" con un '-'
 
 class BYTE_SIGNO():
 	def __init__(self,s):
