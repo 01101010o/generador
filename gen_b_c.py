@@ -9,14 +9,17 @@ class GENERADOR():
 		self.x2=x2
 		self.s1=s1
 		self.s2=s2
+
 	def gen_b(self):
 		if self.s2==0:
 			b=self.x1+self.x2
 		else:
 			b=abs(self.x1-self.x2)
 		return b
+
 	def gen_c(self):
 		return self.x1*self.x2
+
 	def ss1(self):
 		if self.s2==0:
 			if self.s1==0:
