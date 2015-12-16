@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 ##...Creado por 01101010o...##
 #----------------------Módulos
-import random
-
 class GENERADOR():
 	def __init__(self,x1,x2,s1,s2):
 		self.x1=x1
