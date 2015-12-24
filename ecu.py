@@ -58,18 +58,41 @@ class ECU1(BYTE_TRANS,FORMAT):
 		archivo.close()
 	def Ejercicios(self): # Modulo encargado de imprimir en el archivo .tex los ejercicios
 		archivo = open(str(self.nombre)+'.tex', 'a')
+		archivo.write('\\begin{enumerate}');
 		for f in range(1,self.r+1):
 			terminos = []
 			largo = random.randrange(3,6)
 			igual = random.randrange(1,largo)
-			for i in range(largo+1):
+			# XXX aca se debe definir la letra aleatoria para que no se resetee
+			for i in range(largo+2):
 				if i == igual:
-					terminos.append('=')
-				else:
+					terminos.append(['='])
+				else: 
 					termino=[]
 					termino.append(BYTE_TRANS(random.randrange(2)).Signo()) # para signo
-					termino.append(random.randrange(1,25)) # inserta en la tabla un numero aleatorio entre 1&25
-					termino.append(BYTE_TRANS(random.randrange(2)).Literal()) # para literal
-					terminos.append(termino)
-			print(terminos)	
+					termino.append(str(random.randrange(1,25))) # inserta en la tabla un numero aleatorio entre 1&25
+					if i == 0: 
+						termino.append('x')
+						terminos.append(termino)
+					elif i == largo+1:
+						termino.append('')
+						terminos.append(termino)
+					else:
+						termino.append(BYTE_TRANS(random.randrange(2)).Literal()) # para literal
+						terminos.append(termino)
+			primera=recorrersum(terminos,[])
+			eliminar(primera,0,'+')
+			eliminar(primera,primera.index('=')+1,'+')
+			segunda=recorrersum(primera,'')
+			archivo.write(FORMAT(segunda).e())
+			print(segunda)
+		archivo.write('\\end{enumerate}')
 		archivo.close()
+def recorrersum(lista,salida): # recorre una lista y suma sus elemetos, NOTA: Los elementos tienen que ser del mismo tipo
+	for z in lista:
+		salida=salida+z
+	return salida
+def eliminar(lista,posicion,condicion):
+	if lista[posicion] == condicion:
+		del lista[posicion]
+	return lista
