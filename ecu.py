@@ -6,6 +6,7 @@ import random
 from byte_trans import BYTE_TRANS  # Se encarga de la convercion Byte a texto
 from gen_b_c import GENERADOR  # Se encarga de generar valores aleatorios para b,c, ademas de los signos para las soluciones.
 from formatotex import FORMAT  # Se encarga de dar formato para latex
+from listas import recorrersum, eliminar, eliminarUNO # , eliminar0
 
 class ECU2(BYTE_TRANS,GENERADOR,FORMAT):
 	def __init__(self, r, nombre): # Recibe como parámetros:
@@ -83,16 +84,8 @@ class ECU1(BYTE_TRANS,FORMAT):
 			primera=recorrersum(terminos,[])
 			eliminar(primera,0,'+')
 			eliminar(primera,primera.index('=')+1,'+')
+			eliminarUNO(primera,'x')
 			segunda=recorrersum(primera,'')
 			archivo.write(FORMAT(segunda).e())
-			print(segunda)
 		archivo.write('\\end{enumerate}')
 		archivo.close()
-def recorrersum(lista,salida): # recorre una lista y suma sus elemetos, NOTA: Los elementos tienen que ser del mismo tipo
-	for z in lista:
-		salida=salida+z
-	return salida
-def eliminar(lista,posicion,condicion):
-	if lista[posicion] == condicion:
-		del lista[posicion]
-	return lista
