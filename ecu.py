@@ -6,7 +6,7 @@ import random
 from byte_trans import BYTE_TRANS  # Se encarga de la convercion Byte a texto
 from gen_b_c import GENERADOR  # Se encarga de generar valores aleatorios para b,c, ademas de los signos para las soluciones.
 from formatotex import FORMAT  # Se encarga de dar formato para latex
-from listas import recorrersum, eliminar, eliminarUNO # , eliminar0
+from listas import recorrersum, eliminar, eliminarUNO , eliminar0
 
 class ECU2(BYTE_TRANS,GENERADOR,FORMAT):
 	def __init__(self, r, nombre): # Recibe como parámetros:
@@ -19,37 +19,39 @@ class ECU2(BYTE_TRANS,GENERADOR,FORMAT):
 	def Ejercicios(self): # Modulo encargado de imprimir en el archivo .tex los ejercicios
 		archivo = open(str(self.nombre)+'.tex', 'a')
 		archivo.write('\\begin{enumerate}');
-		for i in range(1, self.r+1):
+		for i in range(1, self.r+1): # XXX cambiar esto a una lista generadora
 			x1=random.randrange(10) # Genera una solución entre 0-9
 			x2=random.randrange(10)	# Genera la segunda solución entre 0-9
-			s1=random.randrange(2)	# Genera un signo aleatorio
-			s2=random.randrange(2)	
+			s1=random.randrange(2) # Genera un signo aleatorio
+			s2=random.randrange(2)
+			s0=random.randrange(2) # Genera el signo del termino cuadratico	
 			signo1=BYTE_TRANS(s1)	
 			signo2=BYTE_TRANS(s2)
-			gen=GENERADOR(x1,x2,s1,s2)
+			signo0=BYTE_TRANS(s0)
+			gen=GENERADOR(x1,x2,s0,s1,s2)
 			b=gen.gen_b() # Genera el valor que acompaña a la incógnita
 			c=gen.gen_c() # Genera el valor independiente
 			ss1=BYTE_TRANS(gen.ss1()) # signo solucion1
 			ss2=BYTE_TRANS(gen.ss2()) # signo solucion2
-			if b==0:
+			if b==0: # XXX reemplazar esto por el modulo eliminar0 XXX tambien limpiar todo, usando lista para generar
 				if c==0:
-					archivo.write(FORMAT('x^2=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2=0').e());
 				else:
-					archivo.write(FORMAT('x^2'+signo2.Signo()+str(c)+'=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo2.Signo()+str(c)+'=0').e());
 			elif b==1:
 				if c==0:
-					archivo.write(FORMAT('x^2'+signo1.Signo()+'x=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+'x=0').e());
 				else:
-					archivo.write(FORMAT('x^2'+signo1.Signo()+'x'+signo2.Signo()+str(c)+'=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+'x'+signo2.Signo()+str(c)+'=0').e());
 			else:
 				if c==0:
-					archivo.write(FORMAT('x^2'+signo1.Signo()+str(b)+'x=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+str(b)+'x=0').e());
 				else:
-					archivo.write(FORMAT('x^2'+signo1.Signo()+str(b)+'x'+signo2.Signo()+str(c)+'=0').e());
+					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+str(b)+'x'+signo2.Signo()+str(c)+'=0').e());
 			print(ss1.Signo()+str(x1),ss2.Signo()+str(x2)) # imprime por consola las soluciones de la ecuación.
 		archivo.write('\\end{enumerate}')
 		archivo.close()
-class ECU1(BYTE_TRANS,FORMAT):
+class ECU1(BYTE_TRANS,FORMAT): # XXX implementar fracciones en el futuro
 	def __init__(self, r, nombre):
 		self.r=r # La cantidad de ejercicios 'r'
 		self.nombre=nombre # El nombre del archivo 'nombre'

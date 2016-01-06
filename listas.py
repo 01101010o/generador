@@ -11,8 +11,21 @@ def eliminar(lista,posicion,condicion):
 		del lista[posicion]
 	return lista
 def eliminarUNO(lista,x):
-	for i in range(len(lista)-1):
+	posiciones = []
+	for i in range(len(lista)):
 		if lista[i] == x:
 			if lista[i-1] == '1':
-				del lista[i-1] # XXX Crear una lista con las posiciones, NO ELIMINAR, dar vuelta la lista, y luego eliminar todas las posiciones guardadas
+				posiciones.append(i-1)
+	for f in range(len(posiciones)-1, -1, -1):
+		del lista[posiciones[f]]
+	return lista
+def eliminar0(lista): # Debe ser usado antes que los otros
+	posiciones = []
+	for i in range(len(lista)-1):
+		if lista[i] == '0':
+			posiciones.append(i-1)
+			posiciones.append(i)
+			posiciones.append(i+1)
+	for f in range(len(posiciones)-1, -1, -1):
+		del lista[posiciones[f]]
 	return lista
