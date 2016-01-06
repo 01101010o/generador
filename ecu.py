@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 ##...Creado por 01101010o...##
-#Genera ecuaciones de segundo grado aleatorias en base a 2 soluciones enteras aleatorias
+
+# ECU1 genera ecuaciones de primer grado, con terminos enteros
+# ECU2 genera ecuaciones de segundo grado aleatorias en base a 2 soluciones enteras aleatorias
 
 import random
 from byte_trans import BYTE_TRANS  # Se encarga de la convercion Byte a texto
@@ -19,7 +21,7 @@ class ECU2(BYTE_TRANS,GENERADOR,FORMAT):
 	def Ejercicios(self): # Modulo encargado de imprimir en el archivo .tex los ejercicios
 		archivo = open(str(self.nombre)+'.tex', 'a')
 		archivo.write('\\begin{enumerate}');
-		for i in range(1, self.r+1): # XXX cambiar esto a una lista generadora
+		for i in range(1, self.r+1):
 			x1=random.randrange(10) # Genera una solución entre 0-9
 			x2=random.randrange(10)	# Genera la segunda solución entre 0-9
 			s1=random.randrange(2) # Genera un signo aleatorio
@@ -33,21 +35,11 @@ class ECU2(BYTE_TRANS,GENERADOR,FORMAT):
 			c=gen.gen_c() # Genera el valor independiente
 			ss1=BYTE_TRANS(gen.ss1()) # signo solucion1
 			ss2=BYTE_TRANS(gen.ss2()) # signo solucion2
-			if b==0: # XXX reemplazar esto por el modulo eliminar0 XXX tambien limpiar todo, usando lista para generar
-				if c==0:
-					archivo.write(FORMAT(signo0.Signo()+'x^2=0').e());
-				else:
-					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo2.Signo()+str(c)+'=0').e());
-			elif b==1:
-				if c==0:
-					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+'x=0').e());
-				else:
-					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+'x'+signo2.Signo()+str(c)+'=0').e());
-			else:
-				if c==0:
-					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+str(b)+'x=0').e());
-				else:
-					archivo.write(FORMAT(signo0.Signo()+'x^2'+signo1.Signo()+str(b)+'x'+signo2.Signo()+str(c)+'=0').e());
+			ecu=[signo0.Signo(),'x^2',signo1.Signo(),str(b),'x',signo2.Signo(),str(c),'','=0']
+			eliminar0(ecu)
+			eliminar(ecu,0,'+')
+			recu=recorrersum(ecu,'')
+			archivo.write(FORMAT(recu).e());
 			print(ss1.Signo()+str(x1),ss2.Signo()+str(x2)) # imprime por consola las soluciones de la ecuación.
 		archivo.write('\\end{enumerate}')
 		archivo.close()
